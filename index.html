@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheyutha Foundation – Health Card Registration</title>
+  <!-- Removed Google Fonts to prevent CORS issues when rendering the card to a canvas.
+       System fonts will be used instead. -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/card.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="img/cheyutha_logo.png" alt="Cheyutha Foundation Logo" class="logo-img">
+      </div>
+      <a href="pages/verify.html" class="verify-link">Verify Card</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Membership Card Registration</div>
+      <h1>Register for Your <span class="highlight">Membership Card</span></h1>
+      <p>Our Membership Card offers Single Point of Contact for kidney patients who guides you at every stage. Members receive Doctor &amp; Hospital Assistance, Diagnostic &amp; Lab Support, and access to Affordable Medicines. We also provide Insurance &amp; Financial Guidance along with Diet &amp; Lifestyle Counseling. Members can connect with a Strong Patient Support Community and get access to Exclusive Programs &amp; Priority Services, along with special discounts on healthcare services—ensuring continuous care and support throughout your journey.</p>
+      <div class="hero-partners">
+        <h3>Our partners</h3>
+        <ul class="partner-list">
+          <li>Vijaya Diagnostics</li>
+          <li>NexusCare Lab</li>
+          <li>5Senses</li>
+          <li>Graft Care Pharma</li>
+          <li>Kidney Warriors Foundation</li>
+          <li>New India Insurance</li>
+          <li>nivaBhupa Insurance</li>
+          <li>Care Insurance</li>
+          <li>Hdfc Ergo</li>
+          <li>Major Hospitals In Hyderabad</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <main class="form-container">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Registration Form</h2>
+        <p>All fields marked with <span class="req">*</span> are required</p>
+      </div>
+
+      <form id="registrationForm" novalidate>
+
+        <div class="form-section">
+          <div class="section-title"><span class="section-num">1</span> Personal Information</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Full Name <span class="req">*</span></label>
+              <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" />
+              <span class="error-msg" id="err-fullName"></span>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender <span class="req">*</span></label>
+              <select id="gender" name="gender">
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="error-msg" id="err-gender"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="age">Age <span class="req">*</span></label>
+              <input type="number" id="age" name="age" placeholder="Your age" min="1" max="120" />
+              <span class="error-msg" id="err-age"></span>
+            </div>
+            <div class="form-group">
+              <label for="relation">Relation <span class="req">*</span></label>
+              <select id="relation" name="relation">
+                <option value="">Select relation</option>
+                <option value="Self">Self</option>
+                <option value="Wife">Wife</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Mother">Mother</option>
+                <option value="Father">Father</option>
+                <option value="Sister">Sister</option>
+                <option value="Brother">Brother</option>
+                <option value="Son">Son</option>
+              </select>
+              <span class="error-msg" id="err-relation"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title"><span class="section-num">2</span> Contact Details</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mobile">Mobile Number <span class="req">*</span></label>
+              <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" maxlength="10" />
+              <span class="error-msg" id="err-mobile"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" />
+              <span class="error-msg" id="err-email"></span>
+            </div>
+          </div>
+          <div class="form-group full-width">
+            <label for="address">Address <span class="req">*</span></label>
+            <textarea id="address" name="address" rows="3" placeholder="Your full address"></textarea>
+            <span class="error-msg" id="err-address"></span>
+          </div>
+          <div class="form-group full-width">
+            <label for="anyQuery">Any Query / Message</label>
+            <textarea id="anyQuery" name="anyQuery" rows="2" placeholder="Any questions or special requests?"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title"><span class="section-num">3</span> Photo Documents</div>
+          <div class="form-row upload-row">
+            <div class="form-group upload-group">
+              <label>Aadhaar Photo (optional)</label>
+              <div class="upload-box" id="aadharUploadBox">
+                <input type="file" id="aadharPhoto" name="aadharPhoto" accept="image/*" class="file-input" />
+                <div class="upload-placeholder" id="aadharPlaceholder">
+                  <div class="upload-icon">🪪</div>
+                  <div class="upload-text">Click or tap to upload Aadhaar (optional)</div>
+                  <div class="upload-hint">JPG, PNG – max 5MB</div>
+                </div>
+                <img id="aadharPreview" class="upload-preview" alt="Aadhaar preview" />
+              </div>
+              <span class="error-msg" id="err-aadhar"></span>
+            </div>
+            <div class="form-group upload-group">
+              <label>Passport Photo <span class="req">*</span></label>
+              <div class="upload-box" id="selfieUploadBox">
+                <input type="file" id="selfiePhoto" name="selfiePhoto" accept="image/*" class="file-input" />
+                <div class="upload-placeholder" id="selfiePlaceholder">
+                  <div class="upload-icon">🤳</div>
+                  <div class="upload-text">Click or tap to upload Passport</div>
+                  <div class="upload-hint">JPG, PNG – max 5MB</div>
+                </div>
+                <img id="selfiePreview" class="upload-preview" alt="Passport preview" />
+              </div>
+              <span class="error-msg" id="err-selfie"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section consent-section">
+          <label class="checkbox-label">
+            <input type="checkbox" id="consent" name="consent" />
+            <span class="checkmark"></span>
+            <span>I confirm that all the information provided is accurate and I agree to the terms of Cheyutha Foundation for Organ Transplants. <span class="req">*</span></span>
+          </label>
+          <span class="error-msg" id="err-consent"></span>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" id="submitBtn" class="submit-btn">
+            <span id="btnText">Register &amp; Get My Health Card</span>
+            <span id="btnLoader" class="btn-loader hidden">
+              <span class="spinner"></span> <span id="progressMsg">Processing…</span>
+            </span>
+          </button>
+        </div>
+
+      </form>
+
+      <div id="globalError" class="global-error hidden"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Helpline: <strong>8328605200</strong> &nbsp;|&nbsp; <a href="http://www.cfotindia.org" target="_blank">www.cfotindia.org</a> &nbsp;|&nbsp; WhatsApp Support Available &nbsp;|&nbsp; Hyderabad</p>
+    <p class="tagline">"Complete Care from Diagnosis to Lifelong Transplant Support"</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/compress-image.js"></script>
+  <script src="js/upload-files.js"></script>
+  <script src="js/card-builder.js"></script>
+  <script src="js/pdf-generator.js"></script>
+  <script src="js/submit.js"></script>
+</body>
+</html>

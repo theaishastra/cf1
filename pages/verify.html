@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Health Card – Cheyutha Foundation</title>
+  <!-- Removed Google Fonts to avoid CORS/taint issues. Using system fonts instead. -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .verify-form-area {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .verify-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .verify-input:focus { border-color: var(--blue-light); }
+
+    .verify-btn {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+
+    .verify-btn:hover:not(:disabled) { opacity: 0.88; }
+    .verify-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Result card */
+    .result-card {
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .result-header {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      padding: 16px 24px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .result-status-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .result-status-badge.active  { background: rgba(13,184,160,0.3); color: #7effec; }
+    .result-status-badge.inactive { background: rgba(229,62,62,0.3); color: #ffa5a5; }
+
+    .result-body { padding: 24px; }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { font-weight: 700; color: var(--gray-700); min-width: 130px; }
+    .result-value { color: var(--blue-dark); font-weight: 800; text-align: right; }
+
+    .not-found-box {
+      text-align: center;
+      padding: 32px;
+      background: #fff5f5;
+      border: 1px solid #fc8181;
+      border-radius: var(--radius-md);
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    .not-found-box .nf-icon { font-size: 40px; margin-bottom: 12px; }
+
+    .hint-text {
+      font-size: 13px;
+      color: var(--gray-400);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .search-examples {
+      background: var(--gray-50);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--gray-700);
+      margin-bottom: 20px;
+      border: 1px solid var(--gray-200);
+    }
+    .search-examples strong { color: var(--blue-dark); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="../img/cheyutha_logo.png" alt="Cheyutha Foundation Logo" class="logo-img">
+      </div>
+      <a href="../index.html" class="verify-link">Register Now</a>
+    </div>
+  </header>
+
+  <div class="page-wrap">
+    <div class="page-card">
+      <div class="page-card-header">
+        <h1>Verify Health Card</h1>
+        <p>Enter a Member ID to check its validity and details</p>
+      </div>
+
+      <div class="page-card-body">
+
+        <div class="search-examples">
+          <strong>Example IDs:</strong> CF260001, CF260002, CF260003
+        </div>
+
+        <div class="verify-form-area">
+          <input
+            type="text"
+            id="memberIdInput"
+            class="verify-input"
+            placeholder="e.g. CF260001"
+            maxlength="10"
+          />
+          <button id="verifyBtn" class="verify-btn" onclick="doVerify()">
+            <span id="verifyBtnText">Verify</span>
+          </button>
+        </div>
+
+        <div class="hint-text">Member IDs start with CF followed by the year and a 4-digit number.</div>
+
+        <!-- Result area -->
+        <div id="resultArea" style="margin-top: 24px;"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Helpline: <strong>8328605200</strong> &nbsp;|&nbsp; <a href="http://www.cfotindia.org" target="_blank">www.cfotindia.org</a> &nbsp;|&nbsp; WhatsApp Support Available &nbsp;|&nbsp; Hyderabad</p>
+  </footer>
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/supabase-client.js"></script>
+
+  <script>
+    // Allow pressing Enter in the input
+    document.getElementById('memberIdInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') doVerify();
+    });
+
+    async function doVerify() {
+      const input = document.getElementById('memberIdInput');
+      const rawId = (input.value || '').trim().toUpperCase();
+
+      if (!rawId) {
+        showResult('<div class="not-found-box"><div class="nf-icon">⚠️</div><p>Please enter a Member ID.</p></div>');
+        return;
+      }
+
+      // Basic format check
+      if (!/^CF\d{6}$/.test(rawId)) {
+        showResult('<div class="not-found-box"><div class="nf-icon">⚠️</div><p>Invalid format. Member IDs look like: CF260001</p></div>');
+        return;
+      }
+
+      setVerifyLoading(true);
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('members')
+          .select('full_name, member_id, relation, status, created_at, gender, age, mobile_number')
+          .eq('member_id', rawId)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+          showResult(`
+            <div class="not-found-box">
+              <div class="nf-icon">🔍</div>
+              <p>No member found with ID <strong>${rawId}</strong>.</p>
+              <p style="margin-top:8px; font-size:13px; font-weight:400;">Double-check the ID on your card or contact us at 8328605200.</p>
+            </div>
+          `);
+          return;
+        }
+
+        const statusClass = data.status === 'active' ? 'active' : 'inactive';
+        const statusLabel = data.status === 'active' ? '✓ Active' : '✗ Inactive';
+        const regDate = data.created_at
+          ? new Date(data.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
+          : '—';
+
+        showResult(`
+          <div class="result-card">
+            <div class="result-header">
+              <div style="flex:1;">
+                <div style="font-weight:800; font-size:16px;">${escHtml(data.full_name)}</div>
+                <div style="font-size:12px; opacity:0.75; margin-top:2px;">Member ID: ${escHtml(data.member_id)}</div>
+              </div>
+              <span class="result-status-badge ${statusClass}">${statusLabel}</span>
+            </div>
+            <div class="result-body">
+              <div class="result-row">
+                <span class="result-label">Full Name</span>
+                <span class="result-value">${escHtml(data.full_name)}</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Member ID</span>
+                <span class="result-value" style="letter-spacing:2px;">${escHtml(data.member_id)}</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Gender</span>
+                <span class="result-value">${escHtml(data.gender || '—')}</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Age</span>
+                <span class="result-value">${escHtml(String(data.age || '—'))} yrs</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Relation</span>
+                <span class="result-value">${escHtml(data.relation || '—')}</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Status</span>
+                <span class="result-value" style="color:${data.status === 'active' ? 'var(--green)' : 'var(--red)'};">${escHtml(data.status || '—')}</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Registration Date</span>
+                <span class="result-value">${regDate}</span>
+              </div>
+            </div>
+          </div>
+        `);
+
+      } catch (err) {
+        console.error('Verify error:', err);
+        showResult(`<div class="not-found-box"><div class="nf-icon">⚠️</div><p>Verification failed: ${err.message}</p></div>`);
+      } finally {
+        setVerifyLoading(false);
+      }
+    }
+
+    function showResult(html) {
+      document.getElementById('resultArea').innerHTML = html;
+    }
+
+    function setVerifyLoading(loading) {
+      const btn = document.getElementById('verifyBtn');
+      const txt = document.getElementById('verifyBtnText');
+      btn.disabled = loading;
+      txt.textContent = loading ? 'Checking…' : 'Verify';
+    }
+
+    function escHtml(str) {
+      return String(str || '')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+/* Removed external Google Fonts import to avoid CORS/taint issues when
+   generating the PDF. Use default system fonts instead. */
+
+:root {
+  --cf-teal: #0f6073;
+  --cf-teal-dark: #0b4f60;
+  --cf-teal-soft: #dce8ed;
+  --cf-teal-mid: #8faab6;
+  --cf-red: #ba3737;
+  --cf-red-dark: #a92d2d;
+  --cf-red-soft: #d25550;
+  --cf-blue: #0e75db;
+  --cf-blue-dark: #0a67c0;
+  --cf-text: #124f61;
+  --cf-text-dark: #183746;
+  --cf-white: #ffffff;
+  --cf-light-gray: #eef4f7;
+  --cf-med-gray: #d4dfe5;
+  --cf-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+}
+
+/* The card wrapper uses system sans-serif fonts to ensure canvas rendering
+   doesn't pull in cross‑origin font files. */
+.cf-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cf-card {
+  width: 900px;
+  height: 540px;
+  position: relative;
+  overflow: hidden;
+  background: var(--cf-white);
+  box-shadow: var(--cf-shadow);
+  border-radius: 4px;
+  isolation: isolate;
+}
+
+/* =========================
+   COMMON TOP CURVES
+   ========================= */
+.cf-front-top-curves,
+.cf-back-top-curves {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 290px;
+  height: 112px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cf-front-top-curves .curve,
+.cf-back-top-curves .curve {
+  position: absolute;
+  border-radius: 0 0 220px 0;
+}
+
+.cf-front-top-curves .curve-1,
+.cf-back-top-curves .curve-1 {
+  width: 175px;
+  height: 52px;
+  left: -12px;
+  top: -4px;
+  background: var(--cf-teal-soft);
+}
+
+.cf-front-top-curves .curve-2,
+.cf-back-top-curves .curve-2 {
+  width: 148px;
+  height: 40px;
+  left: 8px;
+  top: 14px;
+  background: #93adb8;
+}
+
+.cf-front-top-curves .curve-3,
+.cf-back-top-curves .curve-3 {
+  width: 114px;
+  height: 28px;
+  left: 32px;
+  top: 34px;
+  background: #6e8b98;
+}
+
+/* =========================
+   FRONT
+   ========================= */
+.cf-card-front {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfe 100%);
+}
+
+.cf-front-hex-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 228px;
+  height: 100%;
+  opacity: 0.88;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='72' viewBox='0 0 62 72'%3E%3Cpolygon points='31,3 58,18 58,54 31,69 4,54 4,18' fill='none' stroke='%23d8e2e7' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-position: center top;
+}
+
+.cf-ecg-deco {
+  position: absolute;
+  left: -12px;
+  bottom: 58px;
+  width: 170px;
+  height: 58px;
+  opacity: 0.95;
+  z-index: 0;
+}
+
+.cf-front-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 34px 10px 32px;
+}
+
+.cf-logo-wrap {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+}
+
+.cf-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.08));
+}
+
+.cf-org-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cf-org-main {
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--cf-teal);
+  letter-spacing: 0.4px;
+}
+
+.cf-org-divider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cf-green-line {
+  width: 58px;
+  height: 2px;
+  background: #5c8a63;
+  display: block;
+}
+
+.cf-org-sub {
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--cf-teal);
+  letter-spacing: 1.1px;
+}
+
+.cf-front-banner-wrap {
+  position: relative;
+  z-index: 2;
+  margin: 8px 0 0 78px;
+}
+
+.cf-front-banner {
+  width: 534px;
+  height: 56px;
+  position: relative;
+  background: linear-gradient(180deg, var(--cf-red-soft) 0%, var(--cf-red-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(186, 55, 55, 0.24);
+}
+
+.cf-banner-notch {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+
+.cf-banner-notch.left {
+  left: -18px;
+  border-top: 28px solid transparent;
+  border-bottom: 28px solid transparent;
+  border-right: 18px solid var(--cf-red);
+}
+
+.cf-banner-notch.right {
+  right: -18px;
+  border-top: 28px solid transparent;
+  border-bottom: 28px solid transparent;
+  border-left: 18px solid var(--cf-red);
+}
+
+.cf-front-banner-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.cf-front-body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 42px 44px 0 104px;
+}
+
+.cf-photo-frame {
+  width: 95px;
+  height: 118px;
+  background: #e0e6ea;
+  border: 1px solid #c5d2d8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cf-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cf-photo-placeholder-icon {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #66717a;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.cf-member-info {
+  min-width: 0;
+  max-width: 560px;
+}
+
+.cf-member-name-big {
+  font-family: 'Oswald', sans-serif;
+  font-size: 35px;
+  line-height: 1.03;
+  font-weight: 500;
+  color: var(--cf-text);
+  margin-bottom: 16px;
+  letter-spacing: 0.2px;
+  word-break: break-word;
+}
+
+.cf-member-name-big.is-long {
+  font-size: 29px;
+}
+
+.cf-member-id-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.cf-member-id-label,
+.cf-member-id-value {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 500;
+  color: #c1453d;
+}
+
+.cf-care-icon-wrap {
+  position: absolute;
+  right: 116px;
+  top: 92px;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  opacity: 0.95;
+}
+
+.cf-care-icon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cf-front-bottom-wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34px;
+  height: 88px;
+  z-index: 1;
+}
+
+.cf-front-bottom-wave svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cf-front-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 66px;
+  background: var(--cf-teal);
+  z-index: 2;
+}
+
+.cf-footer-content {
+  height: 100%;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-footer-tagline {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.35px;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.cf-footer-website {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+}
+
+/* =========================
+   BACK
+   ========================= */
+.cf-card-back {
+  background: linear-gradient(180deg, #eef4f7 0%, #f9fcfd 100%);
+}
+
+.cf-back-hex-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 228px;
+  height: 100%;
+  opacity: 0.78;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='72' viewBox='0 0 62 72'%3E%3Cpolygon points='31,3 58,18 58,54 31,69 4,54 4,18' fill='none' stroke='%23d3dfe5' stroke-width='1.3'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-position: center top;
+}
+
+.cf-back-header {
+  position: relative;
+  z-index: 2;
+  height: 84px;
+  background: #3d7887;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-back-header-center {
+  text-align: center;
+  color: #ffffff;
+}
+
+.cf-back-org-name {
+  font-size: 16px;
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+.cf-back-org-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1;
+  font-style: italic;
+  opacity: 0.96;
+}
+
+.cf-back-header-line {
+  position: absolute;
+  top: 40px;
+  width: 68px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.cf-back-header-line.left {
+  left: 24px;
+}
+
+.cf-back-header-line.right {
+  right: 24px;
+}
+
+.cf-back-body {
+  position: relative;
+  z-index: 2;
+  padding: 20px 56px 12px;
+}
+
+.cf-benefits-box {
+  min-height: 230px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--cf-blue) 0%, var(--cf-blue-dark) 100%);
+  box-shadow: 0 6px 18px rgba(12, 88, 164, 0.14);
+}
+
+.cf-benefits-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 10px 0;
+}
+
+.cf-benefits-label {
+  position: relative;
+  min-width: 192px;
+  background: var(--cf-red);
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  padding: 10px 20px 10px 18px;
+}
+
+.cf-benefits-label::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -18px;
+  width: 0;
+  height: 0;
+  border-top: 19px solid transparent;
+  border-bottom: 19px solid transparent;
+  border-left: 18px solid var(--cf-red);
+}
+
+.cf-benefits-line {
+  flex: 1;
+  height: 2px;
+  margin-left: 28px;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.cf-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 26px;
+  padding: 14px 22px 20px;
+}
+
+.cf-benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cf-benefit-icon {
+  width: 24px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.cf-benefit-text {
+  color: rgba(255, 255, 255, 0.97);
+  font-size: 12px;
+  line-height: 1.28;
+  font-weight: 500;
+}
+
+.cf-back-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 108px;
+  background: var(--cf-teal);
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px 24px 14px;
+}
+
+.cf-back-footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cf-back-tagline {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 500;
+  color: #ffffff;
+  letter-spacing: 0.1px;
+}
+
+.cf-back-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  max-width: 700px;
+}
+
+.cf-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.cf-contact-icon {
+  font-size: 14px;
+}
+
+.cf-qr-box {
+  width: 84px;
+  height: 84px;
+  background: #ffffff;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cf-qr-box canvas,
+.cf-qr-box img {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cf-qr-placeholder {
+  font-size: 11px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* =========================
+   PRINT / PDF
+   ========================= */
+@media print {
+  .cf-card-wrapper {
+    gap: 12px;
+  }
+
+  .cf-card {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* ==========================================================================
+   Template-based membership card styles
+   These classes support the new-design mode in card-builder.js where the front
+   and back of the card are rendered from PNG templates with dynamic overlays.
+   -------------------------------------------------------------------------- */
+.cf-card-front.new-design,
+.cf-card-back.new-design {
+  /* Use no default background so that backgroundImage set inline is visible */
+  background: none !important;
+}
+
+.cf-card-front.new-design .cf-custom-overlay {
+  position: absolute;
+  /* Center the overlay horizontally and position it below the banner.
+     The overlay has a fixed width and is centered using transform.
+     Adjust top or width if you update the artwork dimensions. */
+  top: 280px;
+  /* Center the overlay horizontally across the entire card. Use full width and
+     flexbox to center the content. Adjust top to position the row relative to
+     the banner and blank band. */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.cf-custom-photo {
+  width: 75px;
+  height: 95px;
+  background: #e0e6ea;
+  border: 1px solid #c5d2d8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cf-custom-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cf-custom-info {
+  margin-left: 24px;
+  min-width: 0;
+  color: var(--cf-text);
+}
+
+.cf-custom-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 38px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  word-break: break-word;
+}
+
+.cf-custom-id {
+  margin-top: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--cf-red-dark);
+}
+
+.cf-custom-qr {
+  position: absolute;
+  bottom: 80px;
+  right: 100px;
+  width: 130px;
+  height: 130px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 3;
+}

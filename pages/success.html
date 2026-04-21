@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Successful – Cheyutha Foundation</title>
+  <!-- Removed Google Fonts to avoid CORS/taint issues. Using system fonts instead. -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .success-icon { font-size: 64px; text-align: center; margin-bottom: 16px; }
+    .success-title { font-family: var(--font-display); font-size: 28px; color: var(--blue-dark); text-align: center; margin-bottom: 8px; }
+    .success-sub   { text-align: center; color: var(--gray-400); margin-bottom: 28px; font-size: 15px; }
+
+    .info-box {
+      background: var(--blue-pale);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(74,144,217,0.2); font-size: 14px; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-weight: 700; color: var(--gray-700); }
+    .info-value { color: var(--blue-dark); font-weight: 800; }
+
+    .member-id-big {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--blue-mid);
+      letter-spacing: 4px;
+      background: var(--blue-pale);
+      border: 2px solid var(--blue-light);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .email-notice {
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      color: white;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; text-decoration: none; }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--blue-mid);
+      border: 2px solid var(--blue-mid);
+      padding: 11px 28px;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: var(--blue-pale); text-decoration: none; }
+
+    .helpline-box {
+      text-align: center;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+    .helpline-box strong { color: var(--gray-700); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <img src="../img/cheyutha_logo.png" alt="Cheyutha Foundation Logo" class="logo-img">
+      </div>
+      <a href="../index.html" class="verify-link">New Registration</a>
+    </div>
+  </header>
+
+  <div class="page-wrap">
+    <div class="page-card">
+      <div class="page-card-header">
+        <h1>Registration Successful!</h1>
+        <p>Welcome to the Cheyutha Foundation family</p>
+      </div>
+      <div class="page-card-body">
+        <div class="success-icon">🎉</div>
+        <div class="success-title" id="welcomeText">Welcome!</div>
+        <div class="success-sub">Your Health Card has been generated successfully.</div>
+
+        <div class="member-id-big" id="memberIdDisplay">—</div>
+
+        <div class="info-box" id="infoBox" style="display:none;">
+          <div class="info-row">
+            <span class="info-label">Name</span>
+            <span class="info-value" id="infoName">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Member ID</span>
+            <span class="info-value" id="infoId">—</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="infoEmail">—</span>
+          </div>
+        </div>
+
+        <div class="email-notice" id="emailNotice">
+          ✉️ Your health card has been sent to your email address. Please check your inbox (and spam folder).
+        </div>
+
+        <div class="action-buttons">
+          <a href="verify.html" class="btn-primary">Verify My Card</a>
+          <a href="../index.html" class="btn-secondary">Back to Home</a>
+        </div>
+
+        <div class="helpline-box">
+          <p>Need help? Call us: <strong>8328605200</strong></p>
+          <p>Visit: <a href="http://www.cfotindia.org" target="_blank">www.cfotindia.org</a> &nbsp;|&nbsp; WhatsApp Support Available</p>
+          <p class="tagline" style="margin-top:8px;">"Complete Care from Diagnosis to Lifelong Transplant Support"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Helpline: <strong>8328605200</strong> &nbsp;|&nbsp; <a href="http://www.cfotindia.org" target="_blank">www.cfotindia.org</a> &nbsp;|&nbsp; WhatsApp Support Available &nbsp;|&nbsp; Hyderabad</p>
+  </footer>
+
+  <script>
+    // Extract query parameters from the redirect
+    const params = new URLSearchParams(window.location.search);
+    const name     = params.get('name')  || 'Member';
+    const memberId = params.get('id')    || '—';
+    const email    = params.get('email') || '—';
+
+    document.getElementById('welcomeText').textContent    = `Welcome, ${name}!`;
+    document.getElementById('memberIdDisplay').textContent = memberId;
+    document.getElementById('infoName').textContent        = name;
+    document.getElementById('infoId').textContent          = memberId;
+    document.getElementById('infoEmail').textContent       = email;
+
+    if (name && memberId) {
+      document.getElementById('infoBox').style.display = 'block';
+    }
+
+    // Update email notice with actual email
+    if (email && email !== '—') {
+      document.getElementById('emailNotice').innerHTML =
+        `✉️ Your health card has been sent to <strong>${email}</strong>. Please check your inbox (and spam folder).`;
+    }
+  </script>
+
+</body>
+</html>
